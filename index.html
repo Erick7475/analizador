@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprobador de Similitud de Texto</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+            background-color: #f69f40;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #1e2e2d;
+            padding: 3em;
+            border-radius: 0.5em;
+            text-align: center;
+        }
+        .container h1 {
+            color: #f69f40;
+            margin-bottom: 1em;
+        }
+        label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 0.3em;
+            text-align: left;
+        }
+        input {
+            display: block;
+            width: 100%;
+            padding: 1em 0.5em;
+            margin-bottom: 1em;
+            border-radius: 0.3em;
+            background-color: #354342;
+            border: none;
+            outline: none;
+            color: #ffffff;
+        }
+        button {
+            background-color: #f69f40;
+            color: #1e2e2d;
+            padding: 1em 2em;
+            border: none;
+            outline: none;
+            border-radius: 0.5em;
+            cursor: pointer;
+        }
+        p {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comprobador de Similitud de Texto</h1>
+
+        <label for="text1">Ingrese el primer texto:</label>
+        <input type="text" id="text1" placeholder="Texto 1" />
+
+        <label for="text2">Ingrese el segundo texto:</label>
+        <input type="text" id="text2" placeholder="Texto 2" />
+
+        <button id="calculateButton">Calcular Similitud</button>
+
+        <p>Similitud: <span id="result"></span>%</p>
+    </div>
+
+    <script>
+        document.getElementById("calculateButton").addEventListener("click", function() {
+            const text1 = document.getElementById("text1").value.trim();
+            const text2 = document.getElementById("text2").value.trim();
+
+            if (text1 === "" || text2 === "") {
+                alert("Por favor ingrese ambos textos.");
+                return;
+            }
+
+            const similarity = calculateSimilarity(text1, text2);
+            document.getElementById("result").textContent = similarity.toFixed(2);
+        });
+
+        function calculateSimilarity(text1, text2) {
+            const tokens1 = text1.split(" ");
+            const tokens2 = text2.split(" ");
+
+            const set1 = new Set(tokens1);
+            const set2 = new Set(tokens2);
+
+            const intersection = new Set([...set1].filter(x => set2.has(x)));
+            const union = new Set([...set1, ...set2]);
+
+            const similarity = (intersection.size / union.size) * 100;
+            return similarity;
+        }
+    </script>
+</body>
+</html>
